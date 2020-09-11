@@ -2,7 +2,7 @@
 
 Calculates ideal speaker position and speaker stand dimensions given speaker dimensions, desired placement, and seating location.
 
-Arguments
+##### Arguments
 - height of speaker
 - width of speaker
 - depth of speaker
@@ -16,7 +16,7 @@ Arguments
 	- desired height of speaker from ground
 	- desired tiltback angle for speaker
 
-Produces
+##### Produces
 - angle from speaker to back wall
 - distance from inside bottom corner of speaker to the wall
 - distance from outside bottom corner of speaker to the wall
