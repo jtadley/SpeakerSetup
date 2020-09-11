@@ -1,5 +1,7 @@
 # SpeakerSetup
 
+Calculates ideal speaker position and speaker stand dimensions given speaker dimensions, desired placement, and seating location.
+
 Arguments
 - height of speaker
 - width of speaker
