@@ -14,6 +14,8 @@
 
 (define STAND_HEIGHT 10)
 
+;; -------------------------------------------------------------
+
 (define INCR 0.01)
 
 (define π pi)
@@ -86,13 +88,49 @@
                           [v (- z (* η^ (tan β)))]
                           [t (/ (+ φ (- σ) (/ η^ (cos β))) (sin β))]
                           [l (+ t v τ)])
-                       (* l (tan β))))])
-      (zero-function function 0 (/ π 2) INCR χ))))
+                       (* l (tan β))))]
+         [β (zero-function function (- (/ π 2)) (/ π 2) INCR χ)])
+      (list β (- η (* ρ (sin β)))))))
 
 (define tiltback-from-stand-height
   (λ (η)
-    (radians->degrees (β-from-η η))))
+    (let ([res (β-from-η η)])
+      `((tilt-back-angle . ,(radians->degrees (car res)))
+        (back-height . ,(cadr res))))))
 
 (tiltback-from-stand-height 10)
 
 ;; -------------------------------------------------------------
+
+(define η-from-β
+  (λ (β)
+    (let*
+        ([ψ TWEETER_POSN_SIDE]
+         [σ TWEETER_POSN_TOP]
+         [μ TWEETER_DISTANCE_WALL]
+         [φ SPEAKER_HEIGHT]
+         [ρ SPEAKER_DEPTH]
+         [ε SPEAKER_DISTANCE_APART]
+         [δ EAR_DISTANCE_WALL]
+         [χ EAR_DISTANCE_GROUND]
+         [θ (atan (/ (/ ε 2) (- δ μ)))]
+         [τ (/ (/ ε 2) (sin θ))]
+         [function (λ (η)
+                     (let*
+                         ([η^ (- η (* ρ (sin β)))]
+                          [y (- ρ (* (- φ σ) (tan β)))]
+                          [z (* y (cos β))]
+                          [v (- z (* η^ (tan β)))]
+                          [t (/ (+ φ (- σ) (/ η^ (cos β))) (sin β))]
+                          [l (+ t v τ)])
+                       (* l (tan β))))]
+         [η (zero-function function 0 100 INCR χ)])
+      (list η (- η (* ρ (sin β)))))))
+
+(define stand-height-from-tiltback-degrees
+  (λ (β)
+    (let ([res (η-from-β (degrees->radians β))])
+      `((front-height . ,(car res))
+        (back-height . ,(cadr res))))))
+
+(stand-height-from-tiltback-degrees 5)
